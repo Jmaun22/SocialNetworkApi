@@ -93,8 +93,16 @@ reactionDelete( {params, body}, res) {
         { $pull: { reactions: {reactionId: body.reactionId}}},
         { new: true, runValidators: ture}
     )
-    .then
-}
+    .then(Thoughtdata => {
+        if (!Thoughtdata) {
+            res.status(404).json( {message: 'this id does not have thoguht'});
+            return;
+        
+        }
+        res.json({message: 'reaction deleted'});
+    })
+    .catch(err => res.status(500).json(err));
+},
 
 
 
@@ -102,3 +110,5 @@ reactionDelete( {params, body}, res) {
 
   
 }
+
+module.exports = controllerThought
