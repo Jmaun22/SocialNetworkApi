@@ -1,4 +1,4 @@
-const { use } = require('.');
+
 const { Thought, User } = require('../models');
 
 
@@ -91,8 +91,43 @@ const Controlleruser = {
     },
 
     friendAdd( {params}, res) {
+
+        User.findOneAndUpdate(
+            {_id: params.userId },
+            { $addToSet: { friends: params.friendId }},
+            {new: true, runValidators: true }
+        )
+        .then(userData => {
+            if(!userData) {
+
+                res.status(404).json({ message: 'user not found'})
+                return;
+            }
+
+            User.findOneAndUpdate(
+                { _id: params.friendId},
+                { $addToSet: { friends: params.userId}},
+                { new: true, runValidators: true}
+            )
+            .then(userDatafriendId => {
+                if(!userDatafriendId) {
+                    res.status(404).json({ message: 'none with this id'})
+
+                    return;
+                }
+                res.json(userDatafriendId)
+            })
+            .catch(err => res.json(err));
         
-    }
+
+            })
+            .catch(err => res.json(err));
+        
+
+    },
+
                   
 
 }
+
+module.exports = Controlleruser

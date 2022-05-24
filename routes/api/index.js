@@ -1,7 +1,7 @@
 
 const Router = require('express').Router();
-const routesThought = require('./routesThoughts');
-const routesUser = require('./routesUser');
+const routesThought = require('../../controllers/contollersThoughts');
+const routesUser = require('../../controllers/contollersUser');
 
 
 Router.use('/thoughts', routesThought);
